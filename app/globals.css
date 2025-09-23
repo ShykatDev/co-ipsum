@@ -8,6 +8,10 @@ body {
   @apply font-general;
 }
 
+.focus-style {
+  @apply transition-transform duration-200 ease-in-out outline-none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

@@ -16,7 +16,13 @@ export default function Slider() {
   const horizontalRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    ScrollSmoother.create({
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (prefersReducedMotion) return; // skip animations for motion-sensitive users
+
+    const smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
       smooth: 1.5,
@@ -33,20 +39,20 @@ export default function Slider() {
 
     const lastPanel = panels[panels.length - 1];
 
+    // Cache measurements for performance
+    const { baseScroll, extraSpace, viewport } = getMeasurements(panels);
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
         pin: true,
         scrub: 1,
-        end: () => {
-          const { baseScroll, delta } = getMeasurements(panels);
-          return `+=${baseScroll + delta + window.innerHeight}`;
-        },
+        end: `+=${baseScroll + extraSpace + window.innerHeight}`,
       },
     });
 
     tl.to(horizontal, {
-      x: () => -getMeasurements(panels).baseScroll,
+      x: -baseScroll,
       ease: "power2.inOut",
       duration: 1,
     });
@@ -54,7 +60,7 @@ export default function Slider() {
     tl.to(
       lastPanel,
       {
-        width: () => `${getMeasurements(panels).viewport}px`,
+        width: viewport,
         duration: 1,
         ease: "power2.inOut",
       },
@@ -64,59 +70,91 @@ export default function Slider() {
     tl.to(
       horizontal,
       {
-        x: () =>
-          -(getMeasurements(panels).baseScroll + getMeasurements(panels).delta),
+        x: -(baseScroll + extraSpace),
         duration: 1,
         ease: "power2.inOut",
       },
       "<"
     );
+
+    // Cleanup on unmount
+    return () => {
+      tl.kill();
+      smoother.kill();
+    };
   }, []);
 
   return (
     <>
-      <div ref={containerRef} className="h-screen overflow-hidden">
+      <section
+        aria-label="Horizontal product slider"
+        ref={containerRef}
+        className="h-screen overflow-hidden"
+      >
         <div ref={horizontalRef} className="flex w-max">
           <div
             id="heading"
-            className="panel w-screen sm:w-[80vw] md:[70vw] lg:w-[50vw] flex-shrink-0 h-screen bg-[#F2F0ED]"
+            role="group"
+            aria-label="Slider Introduction"
+            tabIndex={0}
+            onFocus={(e) => {
+              e.currentTarget.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+              });
+            }}
+            className="panel w-[90vw] sm:w-[80vw] md:w-[70vw] lg:w-[50vw] xl:w-[50vw] flex-shrink-0 h-screen bg-[#F2F0ED] "
           >
-            <div className="w-full lg:w-4/5 pt-20 sm:pt-0 lg:pt-[20%] px-10 sm:pl-[10%] md:pl-[20%] h-full flex flex-col justify-center lg:justify-start ">
+            <div className="w-full pt-0 lg:pt-[20%] px-10 sm:pl-[10%] md:pl-[20%] h-full flex flex-col justify-center lg:justify-start ">
               <TextContent />
             </div>
           </div>
 
           {sliderData.map((panel, i) => (
             <div
-              key={i}
-              className="panel w-[90vw] sm:w-[70vw] lg:w-[60vw] flex-shrink-0 flex items-center justify-center h-screen mr-6 md:mr-8 last:mr-0"
+              key={`slider-panel-${panel.id}`}
+              role="group"
+              aria-label={panel.title}
+              className="panel w-[90vw] sm:w-[70vw] md:w-[50vw] lg:w-[60vw] flex-shrink-0 flex items-center justify-center h-screen mr-6 md:mr-8 last:mr-0 last:w-[50vw] sm:last:w-[70vw] md:last:w-[50vw] lg:last:w-[60vw] focus:scale-105 focus-style"
             >
               <Image
                 src={panel.imageUrl}
                 alt={panel.title}
-                width={2000}
-                height={2000}
-                quality={100}
-                fetchPriority="high"
-                loading="lazy"
+                width={1800}
+                height={1440}
+                quality={80}
+                fetchPriority={i === 0 ? "high" : "auto"}
+                loading={i === 0 ? "eager" : "lazy"}
                 className="h-full w-full object-cover"
               />
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div className="h-auto flex sm:justify-end bg-white relative">
-        <div className="w-full lg:w-2/4 py-20 sm:py-[5%] md:py-[8%] px-10 sm:pr-[10%] md:pr-[20%] h-fit">
-          <TextContent
-            title={
-              <span>
-                Eros augue curabitur eu <br /> rutrum neque congue
-              </span>
-            }
-          />
-        </div>
-      </div>
+      <section
+        tabIndex={0}
+        onFocus={(e) => {
+          e.currentTarget.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+          });
+        }}
+        aria-labelledby="slider-bottom-heading"
+        className="w-full bg-white flex flex-col sm:items-end py-20 sm:py-[5%] md:py-[8%] px-10 sm:pr-[10%] md:pr-[20%] lg:pr-[10%] h-fit "
+      >
+        <TextContent
+          title={
+            <span id="slider-bottom-heading">
+              Eros augue curabitur eu rutrum neque congue
+            </span>
+          }
+          headingClassName="md:max-w-[560px]"
+          breifClassName="md:max-w-[560px]"
+        />
+      </section>
     </>
   );
 }

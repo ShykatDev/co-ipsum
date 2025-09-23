@@ -3,22 +3,22 @@ import type { SliderData } from "@/types";
 export const sliderData: SliderData[] = [
   {
     id: 1,
-    title: "Innovative Solutions",
+    title: "Slider Image One",
     imageUrl: "/images/one.png",
   },
   {
     id: 2,
-    title: "Creative Designs",
+    title: "Slider Image Two",
     imageUrl: "/images/two.png",
   },
   {
     id: 3,
-    title: "Expert Insights",
+    title: "Slider Image Three",
     imageUrl: "/images/three.jpg",
   },
   {
     id: 4,
-    title: "Creative Designs Innovation",
+    title: "Slider Image Four",
     imageUrl: "/images/four.png",
   },
 ];

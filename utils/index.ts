@@ -17,7 +17,7 @@ export function getMeasurements(panels: HTMLElement[]) {
 
   const baseScroll = wrapperWidth - viewport;
   const lastPanelWidth = lastPanel.offsetWidth;
-  const delta = viewport - lastPanelWidth;
+  const extraSpace = viewport - lastPanelWidth;
 
-  return { viewport, baseScroll, delta };
+  return { viewport, baseScroll, extraSpace };
 }
