@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Horizontal Slider Web App
 
-## Getting Started
+A modern, horizontally scrollable slider web application built with Next.js and GSAP, featuring keyboard accessibility, smooth animations, and responsive design.
+> https://co-ipsum.vercel.app/ 
+---
 
-First, run the development server:
+## Tech Stack
+
+- **Frontend:** Next.js 15 (App Router), React 19, Tailwind CSS V4, TypeScript 
+- **Animations:** GSAP (ScrollTrigger, ScrollSmoother)  
+- **Image Optimization:** Next.js `Image` component  
+- **Accessibility:** Semantic HTML, ARIA labels, keyboard navigation  
+- **Testing:** Playwright
+
+---
+
+## How to Run Locally
+
+1. **Clone the repository:**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/ShykatDev/co-ipsum.git
+cd co-ipsum
+
+# install dependencies
+npm install # or yarn install
+
+# run the development server
+npm run dev # or yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Open development server in your browser:** - [Click here to open local server](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## The project is deployed on **Vercel**:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**[Visit live url](https://co-ipsum.vercel.app/)**
+```bash
+#or copy link from here
+https://co-ipsum.vercel.app/
+```
+## Assumptions & Trade-offs
 
-## Learn More
+- The horizontal slider assumes full-width panels with consistent aspect ratios.
+- Using GSAP `ScrollSmoother`, which overrides native scrolling.
+- `Images` are lazy-loaded except for the first panel for performance.
+- Focus are implemented but only for first and last hading section, not for the images.
 
-To learn more about Next.js, take a look at the following resources:
+## Performance Notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Bundle size optimizations:
+  - `Dynamic` imports for heavy components like Slider.
+  - Optimize Next.js `Image` component for big size images.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Animations optimized:
+  - GSAP `timelines` and `ScrollSmoother` for smooth animations.
+  - `prefers-reduced-motion` respected for motion-sensitive users.
 
-## Deploy on Vercel
+- `Lazy-loading`: Only the first image loads eagerly; others load lazily.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Accessibility Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Text content panels have `tabIndex={0}` for keyboard navigation.
+- aria-label and role="group" used on panels.
+- Used `sementic HTML`.
+- Focus animations and smooth scrolling implemented to improve user experience.
+- Reduced motion media query supported.
+
+## Testing
+
+> **Note:** Make sure your local server in running...
+```bash
+npx playwright test
+```
+Test screenshot 👇
+<img width="1011" height="551" alt="image" src="https://github.com/user-attachments/assets/8b037241-fb6b-4390-9c1e-e9bb7fad3a0c" />
+
+## Design Parity Notes
+
+- **Slider panel widths:**  
+  The last panel width slightly differs on mobile due to responsive adjustments.  
+  **Reason:** To prevent horizontal white space and ensure smooth GSAP scroll.
+
+- **Focus animation scale:**  
+  Slightly smaller scale effect on focus than in Figma.  
+  **Reason:** Maintaining performance on low-end devices and respecting reduced-motion preferences.
+
+- **Text content spacing:**  
+  Minor adjustments in padding/margin for small screens.  
+  **Reason:** To prevent text overlap with scrollable panels and keep responsive readability.
+
+- **Bottom section reveal animation:**  
+  Added fade + slide-up animation not present in Figma.  
+  **Reason:** Improves UX and accessibility; smooth reveal for keyboard and scroll users.
+
+- **Image quality/optimization:**  
+  Images compressed slightly from Figma export.  
+  **Reason:** To improve page load performance without significant visual loss.
+
+## Performance Report (Lighthouse)
+
+**For Desktop Device**
+<img width="1095" height="896" alt="image" src="https://github.com/user-attachments/assets/480723d2-8ee1-45f9-9e89-04205dae6f0b" />
+
+**For Mobile Device**
+<img width="1083" height="1017" alt="image" src="https://github.com/user-attachments/assets/8c75a9c4-9dff-4b10-8fd7-6d7bd8400751" />
+
