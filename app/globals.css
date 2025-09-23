@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-general: var(--font-general);
+}
+
+body {
+  @apply font-general;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
