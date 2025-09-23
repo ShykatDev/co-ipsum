@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("Slider Component", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:3000/");
+    await page.goto("https://co-ipsum.vercel.app/");
   });
 
   test("test first section before images", async ({ page }) => {
