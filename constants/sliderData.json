@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "Slider Image One",
+    "imageUrl": "/images/one.png"
+  },
+  {
+    "id": 2,
+    "title": "Slider Image Two",
+    "imageUrl": "/images/two.png"
+  },
+  {
+    "id": 3,
+    "title": "Slider Image Three",
+    "imageUrl": "/images/three.jpg"
+  },
+  {
+    "id": 4,
+    "title": "Slider Image Four",
+    "imageUrl": "/images/four.png"
+  }
+]

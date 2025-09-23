@@ -1,5 +1,6 @@
 "use client";
-import { sliderData } from "@/constants/sliderData";
+import data from "@/constants/sliderData.json";
+import type { SliderData } from "@/types";
 import { getMeasurements } from "@/utils";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -14,6 +15,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 export default function Slider() {
   const containerRef = useRef<HTMLDivElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -77,6 +79,22 @@ export default function Slider() {
       "<"
     );
 
+    const bottomSection = bottomRef.current;
+    if (bottomSection) {
+      gsap.from(bottomSection, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: bottomSection,
+          start: "top 80%",
+          end: "bottom 60%",
+          toggleActions: "play none none reverse",
+        },
+      });
+    }
+
     // Cleanup on unmount
     return () => {
       tl.kill();
@@ -100,18 +118,16 @@ export default function Slider() {
             onFocus={(e) => {
               e.currentTarget.scrollIntoView({
                 behavior: "smooth",
-                block: "nearest",
-                inline: "center",
               });
             }}
-            className="panel w-[90vw] sm:w-[80vw] md:w-[70vw] lg:w-[50vw] xl:w-[50vw] flex-shrink-0 h-screen bg-[#F2F0ED] "
+            className="panel focus-style w-[90vw] sm:w-[80vw] md:w-[70vw] lg:w-[50vw] xl:w-[50vw] flex-shrink-0 h-screen bg-[#F2F0ED] "
           >
             <div className="w-full pt-0 lg:pt-[20%] px-10 sm:pl-[10%] md:pl-[20%] h-full flex flex-col justify-center lg:justify-start ">
               <TextContent />
             </div>
           </div>
 
-          {sliderData.map((panel, i) => (
+          {data.map((panel: SliderData, i) => (
             <div
               key={`slider-panel-${panel.id}`}
               role="group"
@@ -138,22 +154,25 @@ export default function Slider() {
         onFocus={(e) => {
           e.currentTarget.scrollIntoView({
             behavior: "smooth",
-            block: "nearest",
-            inline: "center",
           });
         }}
         aria-labelledby="slider-bottom-heading"
-        className="w-full bg-white flex flex-col sm:items-end py-20 sm:py-[5%] md:py-[8%] px-10 sm:pr-[10%] md:pr-[20%] lg:pr-[10%] h-fit "
+        className="w-full bg-white flex flex-col sm:items-end py-20 sm:py-[5%] md:py-[8%] px-10 sm:pr-[10%] md:pr-[20%] lg:pr-[10%] h-fit focus-style"
       >
-        <TextContent
-          title={
-            <span id="slider-bottom-heading">
-              Eros augue curabitur eu rutrum neque congue
-            </span>
-          }
-          headingClassName="md:max-w-[560px]"
-          breifClassName="md:max-w-[560px]"
-        />
+        <div
+          ref={bottomRef}
+          className="w-full h-full flex flex-col items-start sm:items-end"
+        >
+          <TextContent
+            title={
+              <span id="slider-bottom-heading">
+                Eros augue curabitur eu rutrum neque congue
+              </span>
+            }
+            headingClassName="md:max-w-[560px]"
+            breifClassName="md:max-w-[560px]"
+          />
+        </div>
       </section>
     </>
   );

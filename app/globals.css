@@ -9,7 +9,7 @@ body {
 }
 
 .focus-style {
-  @apply transition-transform duration-200 ease-in-out outline-none;
+  @apply transition-transform duration-200 ease-in-out focus:ring-4 outline-0 ring-blue-600;
 }
 
 @media (prefers-reduced-motion: reduce) {
