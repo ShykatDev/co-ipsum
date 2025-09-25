@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ship": "next build --turbopack && next start"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

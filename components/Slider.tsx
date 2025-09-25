@@ -1,7 +1,7 @@
 "use client";
 import data from "@/constants/sliderData.json";
-import type { SliderData } from "@/types";
 import { getMeasurements } from "@/lib/utils/index";
+import type { SliderData } from "@/types";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
@@ -9,7 +9,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useRef } from "react";
 import TextContent from "./TextContent";
-import { useTheme } from "@/lib/hooks/useTheme";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
