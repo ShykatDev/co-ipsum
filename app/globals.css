@@ -1,11 +1,25 @@
 @import "tailwindcss";
 
+:root {
+  --bg: #f2f0ed;
+  --text: oklch(21% 0.034 264.665);
+  --secondary-text: color-mix(in oklch, var(--text) 70%, white 30%);
+}
+
+[data-theme="dark"] {
+  --bg: oklch(13% 0.028 261.692);
+  --text: #f2f0ed;
+  --secondary-text: color-mix(in oklch, var(--text) 70%, black 30%);
+}
+
 @theme inline {
   --font-general: var(--font-general);
 }
 
 body {
-  @apply font-general;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-general);
 }
 
 .focus-style {

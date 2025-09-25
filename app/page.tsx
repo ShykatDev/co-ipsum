@@ -8,8 +8,8 @@ const Slider = dynamic(() => import("@/components/Slider"), {
 
 export default function Home() {
   return (
-    <main>
-      <Slider />;
+    <main className="relative">
+      <Slider />
     </main>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import data from "@/constants/sliderData.json";
 import type { SliderData } from "@/types";
-import { getMeasurements } from "@/utils";
+import { getMeasurements } from "@/lib/utils/index";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
@@ -9,12 +9,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useRef } from "react";
 import TextContent from "./TextContent";
+import { useTheme } from "@/lib/hooks/useTheme";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function Slider() {
   const containerRef = useRef<HTMLDivElement>(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -95,6 +97,21 @@ export default function Slider() {
       });
     }
 
+    const headingSection = headingRef.current;
+    if (headingSection) {
+      gsap.fromTo(
+        headingSection,
+        {
+          y: 50,
+          duration: 1,
+          ease: "power2.out",
+        },
+        {
+          y: 0,
+        }
+      );
+    }
+
     // Cleanup on unmount
     return () => {
       tl.kill();
@@ -120,9 +137,12 @@ export default function Slider() {
                 behavior: "smooth",
               });
             }}
-            className="panel focus-style w-[90vw] sm:w-[80vw] md:w-[70vw] lg:w-[50vw] xl:w-[50vw] flex-shrink-0 h-screen bg-[#F2F0ED] "
+            className="panel focus-style w-[90vw] sm:w-[80vw] md:w-[70vw] lg:w-[50vw] xl:w-[50vw] flex-shrink-0 h-screen"
           >
-            <div className="w-full pt-0 lg:pt-[20%] px-10 sm:pl-[10%] md:pl-[20%] h-full flex flex-col justify-center lg:justify-start ">
+            <div
+              ref={headingRef}
+              className="w-full pt-0 lg:pt-[20%] px-10 sm:pl-[10%] md:pl-[20%] h-full flex flex-col justify-center lg:justify-start "
+            >
               <TextContent />
             </div>
           </div>
@@ -141,6 +161,7 @@ export default function Slider() {
                 height={1440}
                 quality={80}
                 fetchPriority={i === 0 ? "high" : "auto"}
+                sizes="(max-width: 768px) 300px, (max-width: 1200px) 50vw, 1800px"
                 loading={i === 0 ? "eager" : "lazy"}
                 className="h-full w-full object-cover"
               />
@@ -157,7 +178,7 @@ export default function Slider() {
           });
         }}
         aria-labelledby="slider-bottom-heading"
-        className="w-full bg-white flex flex-col sm:items-end py-20 sm:py-[5%] md:py-[8%] px-10 sm:pr-[10%] md:pr-[20%] lg:pr-[10%] h-fit focus-style"
+        className="w-full flex flex-col sm:items-end py-20 sm:py-[5%] md:py-[8%] px-10 sm:pr-[10%] md:pr-[20%] lg:pr-[10%] h-fit focus-style"
       >
         <div
           ref={bottomRef}

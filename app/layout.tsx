@@ -1,7 +1,8 @@
 import TopBar from "@/components/TopBar";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import "@/app/globals.css";
+import MenuProvider from "@/lib/providers/MenuProvider";
 
 const general = localFont({
   src: [
@@ -32,13 +33,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${general.variable} antialiased bg-[#292929]`}>
-        <TopBar />
+      <body className={` ${general.variable} antialiased`}>
+        <MenuProvider>
+          <TopBar />
 
-        {/* ScrollSmoother container */}
-        <div id="smooth-wrapper">
-          <div id="smooth-content">{children}</div>
-        </div>
+          {/* ScrollSmoother container */}
+          <div id="smooth-wrapper">
+            <div id="smooth-content">{children}</div>
+          </div>
+        </MenuProvider>
       </body>
     </html>
   );

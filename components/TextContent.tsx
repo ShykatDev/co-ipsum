@@ -1,4 +1,4 @@
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 import { FC, ReactNode } from "react";
 
 const TextContent: FC<{
@@ -10,7 +10,7 @@ const TextContent: FC<{
     <>
       <h2
         className={cn(
-          "text-3xl sm:text-4xl md:text-5xl font-bold leading-[120%] mb-10  max-w-screen md:max-w-[500px]",
+          "text-3xl sm:text-4xl md:text-5xl font-bold leading-[120%] mb-10 max-w-screen md:max-w-[500px]",
           headingClassName
         )}
       >
@@ -22,7 +22,7 @@ const TextContent: FC<{
       </h2>
       <span
         className={cn(
-          "text-base sm:text-lg text-[#292929] leading-[150%] max-w-screen md:max-w-[500px]",
+          "text-base sm:text-lg text-[var(--secondary-text)] leading-[150%] max-w-screen md:max-w-[500px]",
           breifClassName
         )}
       >
